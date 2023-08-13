@@ -6,6 +6,7 @@ set(CMAKE_C_STANDARD 23)
 add_executable(StringTest
         lib/String/StringTest.c
         lib/String/String.c
+        lib/String/String.h
         lib/Bool/Bool.h
         lib/Macros/Macros.h
         lib/PrimitiveTypes/PrimitiveTypes.h
@@ -27,7 +28,17 @@ add_executable(NodeTest
         lib/Node/NodeTest.c
         lib/Node/Node.c
         lib/Node/Node.h
+        lib/String/String.h
         lib/String/String.c
         lib/PrimitiveTypes/PrimitiveTypes.h
         lib/Result/Result.c
         lib/Result/Result.h)
+
+add_executable(ResultTest
+        lib/Result/Result.c
+        lib/Result/Result.h
+        lib/Result/ResultTest.c
+        lib/String/String.c
+        lib/String/String.h
+        lib/Bool/Bool.h
+        lib/Macros/Macros.h)

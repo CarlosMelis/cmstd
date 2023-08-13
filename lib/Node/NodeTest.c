@@ -14,6 +14,7 @@ int main() {
   NodeChangeNextTest();
   NodeChangePreviousTest();
   NodeFreeTest();
+  return 1;
 }
 
 void NodeNewTest(void) {
@@ -42,7 +43,8 @@ void NodeCloneTest(void) {
   // Assert
   Assert(NodeA != NodeB, "The nodes are the same");
   Assert(NodeA->Next == NodeB->Next, "Next pointer is not the expected");
-  Assert(NodeA->Previous == NodeB->Previous, "Previous pointer is not the expected");
+  Assert(NodeA->Previous == NodeB->Previous,
+         "Previous pointer is not the expected");
   Assert((String*)NodeA->Value != (String*)NodeB->Value,
          "The values shouldn't be pointing to the same memory address");
   LogSuccess();

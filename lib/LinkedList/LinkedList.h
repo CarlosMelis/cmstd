@@ -4,7 +4,7 @@
 #include "../Node/Node.h"
 #include "../PrimitiveTypes/PrimitiveTypes.h"
 
-typedef struct LinkedList {
+typedef struct {
   Node* Head;
   Node* Tail;
   uint64 Lenght;
