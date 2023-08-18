@@ -22,7 +22,8 @@ add_executable(LinkedListTest
         lib/Node/Node.h
         lib/PrimitiveTypes/PrimitiveTypes.h
         lib/Result/Result.c
-        lib/Result/Result.h)
+        lib/Result/Result.h
+        lib/Queue/QueueTest.c)
 
 add_executable(NodeTest
         lib/Node/NodeTest.c
@@ -42,3 +43,13 @@ add_executable(ResultTest
         lib/String/String.h
         lib/Bool/Bool.h
         lib/Macros/Macros.h)
+
+add_executable(StackTest
+        lib/Stack/Stack.c
+        lib/Stack/Stack.h
+        lib/Stack/StackTest.c)
+
+add_executable(QueueTest
+        lib/Queue/Queue.c
+        lib/Queue/Queue.h
+        lib/Queue/QueueTest.c)

@@ -11,42 +11,99 @@ LinkedList* LinkedListNew(Node head, Node tail) {
   return result;
 }
 
-Bool LinkedListDelete(LinkedList* this, Node item) {
-  uint64 counter = 0;
-  Node* iterator = this->Head;
-  while (counter < this->Lenght) {
-    if(iterator->Value == item.Value) {
-      iterator->Previous->Next = iterator->Next;
-      iterator->Next->Previous = iterator->Previous;
-      NodeFree(&iterator);
-      return True;
-    }
-    iterator = iterator->Next;
-    counter++;
+Result GetNode(LinkedList this, uint64 index) {
+  if (index > this.Lenght) {
+    String* errorMessage = StringNew("The index is out of range");
+    Result result = ResultError(&errorMessage);
+    return result;
   }
-  return False;
+
+  if (index == 0) {
+    Result result = ResultOk(this.Head);
+    return result;
+  }
+
+  if (index == this.Lenght) {
+    Result result = ResultOk(this.Tail);
+    return result;
+  }
+
+  Node* wantedNode = this.Head;
+  for (uint64 i = 0; i < this.Lenght && wantedNode != this.Tail; i++) {
+    if (i == index) {
+      Result result = ResultOk(wantedNode);
+      return result;
+    }
+    wantedNode = wantedNode->Next;
+  }
+
+  // This should never be executed
+  String* errorMessage = StringNew("Something unexpected happened");
+  Result result = ResultError(&errorMessage);
+  return result;
 }
 
-void LinkedListInsert(LinkedList this, Node item, uint64 position);
+Result LinkedListRemove(LinkedList* this, uint64 index) {
+  Result getNodeResult = GetNode(*this, index);
+  if (!getNodeResult.Ok) {
+    return getNodeResult;
+  }
 
-void LinkedListAppendItem(LinkedList this, Node item);
+  Node* wantedNode = (Node*)getNodeResult.Value;
+  wantedNode->Next->Previous = wantedNode->Previous;
+  wantedNode->Previous->Next = wantedNode->Next;
+  NodeFree(&wantedNode);
 
-void LinkedListReverseAppendItem(LinkedList this, Node item);
+  return ResultOk(NULL);
+}
 
-LinkedList LinkedListAppendLinkedList(LinkedList left, LinkedList right);
+Result LinkedListInsert(LinkedList* this, Node* item, uint64 index) {
+  Result getNodeResult = GetNode(*this, index);
+  if (!getNodeResult.Ok) {
+    return getNodeResult;
+  }
 
-LinkedList LinkedListReverseAppendLinkedList(LinkedList left, LinkedList right);
+  Node* wantedNode = (Node*)getNodeResult.Value;
+  item->Previous = wantedNode->Previous;
+  item->Next = wantedNode;
+  wantedNode->Next->Previous = item;
 
-LinkedList LinkedListSpan(LinkedList source, uint64 initial, uint64 final);
+  return ResultOk(NULL);
+}
 
-LinkedList LinkedListFree(LinkedList* this);
+Result LinkedListSpan(LinkedList source, uint64 head, uint64 tail) {
+  Result headResult = GetNode(source, head);
+  if (!headResult.Ok) {
+    return headResult;
+  }
+
+  Result tailResult = GetNode(source, tail);
+  if (!headResult.Ok) {
+    return headResult;
+  }
+
+  LinkedList* newList
+      = LinkedListNew(*((Node*)headResult.Value), *((Node*)tailResult.Value));
+  Result result = ResultOk(newList);
+  return result;
+}
+
+void LinkedListFree(LinkedList* this) {
+  Node* currentNode = this->Head;
+  while (currentNode != NULL) {
+    Node* temporalNode = currentNode->Next;
+    NodeFree(&currentNode);
+    currentNode = temporalNode;
+  }
+  free(this);
+}
 
 static uint64 connectNodes(Node* head, Node* tail) {
   if (head == NULL) {
     return 0;
   }
 
-  uint64 counter = 1;
+  uint64 counter = 0;
   Node* beginning = head;
 
   while (head != tail && head->Next != NULL) {

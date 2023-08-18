@@ -4,11 +4,13 @@
 #include "../Bool/Bool.h"
 #include "../String/String.h"
 
-typedef struct {
+struct Result{
   Bool Ok;
   String* Error;
   void* Value;
-} Result;
+};
+
+typedef struct Result Result;
 
 Result ResultOk(void* value);
 Result ResultError(String** errorMessage);

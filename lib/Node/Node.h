@@ -6,12 +6,14 @@
 #include "../PrimitiveTypes/PrimitiveTypes.h"
 
 /* Establishes a collection relation between different values. */
-typedef struct {
+struct Node {
   void* Value;
   uint64 DataSize;
   struct Node* Next;
   struct Node* Previous;
-} Node;
+};
+
+typedef struct Node Node;
 
 /* Creates a new Node */
 Node* NodeNew(void* value, uint64 DataSize, Node* next, Node* previous);
